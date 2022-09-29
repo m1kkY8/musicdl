@@ -1,14 +1,25 @@
-from time import sleep
+from webbrowser import get
 import youtube_dl
 import ffmpeg
 import os
 
 
-{
-    ffmpeg
-    .input('/home/milan/music/Pisces.mp4')
-    .output('pisces.mp3')
-    .run()
-} 
-sleep(2)
-os.system('rm ./pisces.mp3')
+#videoLink = 'https://www.youtube.com/watch?v=SQNtGoM3FVU'
+
+videoLink = input("Enter URL: ")
+
+def getSongName(url):
+
+    ydl = youtube_dl.YoutubeDL(
+        {
+            "outtmpl": "%(id)s%(ext)s",
+            "noplaylist": True,
+            "quiet": True,
+            "format": "bestvideo",
+        }
+    )
+    with ydl:
+        result = ydl.extract_info(url, download=False)  
+    return (result["title"]) 
+
+print("Song name is: ", getSongName(videoLink))
