@@ -1,25 +1,36 @@
-from webbrowser import get
+from __future__ import unicode_literals
 import youtube_dl
 import ffmpeg
 import os
 
-
 #videoLink = 'https://www.youtube.com/watch?v=SQNtGoM3FVU'
 
-videoLink = input("Enter URL: ")
+def status(d):
+    if d['status'] == 'finished':
+        print('Done downloading, now converting ...')
 
-def getSongName(url):
 
-    ydl = youtube_dl.YoutubeDL(
-        {
-            "outtmpl": "%(id)s%(ext)s",
-            "noplaylist": True,
-            "quiet": True,
-            "format": "bestvideo",
-        }
-    )
-    with ydl:
-        result = ydl.extract_info(url, download=False)  
-    return (result["title"]) 
+ydl_opts = {
+    'format': 'bestaudio/best',
+    'postprocessors': [{
+        'key': 'FFmpegExtractAudio',
+        'preferredcodec': 'mp3',
+        'preferredquality': '192',
+    }],
+    
+    'progress_hooks': [status],
+}
 
-print("Song name is: ", getSongName(videoLink))
+url = input("Enter URL: ")
+
+ytdl = youtube_dl.YoutubeDL(ydl_opts)
+
+title = ytdl.extract_info(url, download=False)
+
+print(title['title'])
+
+
+
+
+    #https://www.youtube.com/watch?v=BaW_jenozKc
+    #https://www.youtube.com/watch?v=0CM3IvuTuRk
