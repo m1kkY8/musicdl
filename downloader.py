@@ -5,9 +5,12 @@ import os
 
 #videoLink = 'https://www.youtube.com/watch?v=SQNtGoM3FVU'
 
+
+
 def status(d):
     if d['status'] == 'finished':
         print('Done downloading, now converting ...')
+
 
 
 ydl_opts = {
@@ -19,17 +22,23 @@ ydl_opts = {
     }],
     
     'progress_hooks': [status],
+    'quiet': True
 }
-
-url = input("Enter URL: ")
 
 ytdl = youtube_dl.YoutubeDL(ydl_opts)
 
+
+url = input("Enter URL: ")
+
 title = ytdl.extract_info(url, download=False)
 
-print(title['title'])
+print("Video name: ",title['title'])
 
+dlBool = input("Download video (y/n): ")
 
+if dlBool == 'y':
+    ytdl.download([url])
+    print("Downloaded ", title['title'])
 
 
     #https://www.youtube.com/watch?v=BaW_jenozKc
