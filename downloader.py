@@ -8,17 +8,28 @@ import os
 
 
 def status(d):
+
+    eta = d.get('eta')
+
+    if eta and eta >0:
+        elapsed = d.get('elapsed')
+        total_time = eta+elapsed
+        percent = (total_time / 100) * elapsed
+        print(percent,"%")
+    
+
     if d['status'] == 'finished':
-        print('Done downloading, now converting ...')
+        print('Done downloading')
 
 
 
 ydl_opts = {
     'format': 'bestaudio/best',
+#    'outtmpl': '/home/milan/Music/',
     'postprocessors': [{
         'key': 'FFmpegExtractAudio',
         'preferredcodec': 'mp3',
-        'preferredquality': '192',
+        'preferredquality': '256',
     }],
     
     'progress_hooks': [status],
@@ -28,17 +39,20 @@ ydl_opts = {
 ytdl = youtube_dl.YoutubeDL(ydl_opts)
 
 
-url = input("Enter URL: ")
+while 1:
+    url = input("Enter URL: ")
 
-title = ytdl.extract_info(url, download=False)
+    if url == 'q':
+        break
 
-print("Video name: ",title['title'])
-
-dlBool = input("Download video (y/n): ")
-
-if dlBool == 'y':
+    info = ytdl.extract_info(url, download=False)
+    print("Video name: ",info['title'])
+    sizeMB = info['formats'][0]['filesize']
+    print("Size: %f MB: "% sizeMB)
     ytdl.download([url])
-    print("Downloaded ", title['title'])
+    
+
+
 
 
     #https://www.youtube.com/watch?v=BaW_jenozKc
