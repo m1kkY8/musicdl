@@ -6,6 +6,21 @@ import os
 #videoLink = 'https://www.youtube.com/watch?v=SQNtGoM3FVU'
 
 
+def download(ytdl):
+
+    while 1:
+        url = input("Enter URL: ")
+
+        if url == 'q':
+            return
+
+        info = ytdl.extract_info(url, download=False)
+        print("Video name: ",info['title'])
+        sizeMB = info['formats'][0]['filesize']
+        print("Size: %f MB: "% sizeMB)
+        ytdl.download([url])
+        
+
 
 def status(d):
 
@@ -20,7 +35,6 @@ def status(d):
 
     if d['status'] == 'finished':
         print('Done downloading')
-
 
 
 ydl_opts = {
@@ -38,20 +52,7 @@ ydl_opts = {
 
 ytdl = youtube_dl.YoutubeDL(ydl_opts)
 
-
-while 1:
-    url = input("Enter URL: ")
-
-    if url == 'q':
-        break
-
-    info = ytdl.extract_info(url, download=False)
-    print("Video name: ",info['title'])
-    sizeMB = info['formats'][0]['filesize']
-    print("Size: %f MB: "% sizeMB)
-    ytdl.download([url])
-    
-
+download(ytdl)
 
 
 
