@@ -13,7 +13,7 @@ def status(d):
 
     if eta and eta >0:
         elapsed = d.get('elapsed')
-        total_time = eta+elapsed
+        total_time = eta-elapsed
         percent = (total_time / 100) * elapsed
         print(percent,"%")
     
